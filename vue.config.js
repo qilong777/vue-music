@@ -9,7 +9,10 @@ module.exports = {
     proxy: {
       '/api': {
         target: 'http://ustbhuangyi.com',
-        changeOrigin: true
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '' // 将路径中多余的暗号 删除
+        }
       }
     }
   },

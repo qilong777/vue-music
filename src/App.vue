@@ -5,7 +5,9 @@
       <TabBar></TabBar>
     </div>
     <main class="main">
-      <router-view/>
+      <keep-alive>
+        <router-view/>
+      </keep-alive>
     </main>
   </div>
 </template>
@@ -36,6 +38,7 @@ body,html{
   height: 100%;
   .top{
     flex-shrink: 0;
+    background-color: #222;
   }
   .main{
     position: relative;

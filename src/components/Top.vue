@@ -22,7 +22,7 @@ export default {
 <style lang='scss' scoped>
 .header{
   position: relative;
-  height: 44px;
+  height: 1.173333rem;
   background-color: #222;
   text-align: center;
   color:#ffcd32;
@@ -31,17 +31,17 @@ export default {
     // width: 150px;
     img{
       vertical-align: top;
-      margin-top: 6px;
-      width: 30px;
-      height: 32px;
-      margin-right: 9px;
+      margin-top: .16rem;
+      width: .8rem;
+      height: .853333rem;
+      margin-right: .24rem;
     }
     h1{
       display: inline-block;
-      height: 44px;
+      height: 1.173333rem;
       vertical-align: top;
-      line-height: 44px;
-      font-size: 18px;
+      line-height: 1.173333rem;
+      font-size: .48rem;
       font-weight: 400;
       margin: 0;
     }
@@ -50,10 +50,10 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
-    font-size: 20px;
-    width: 44px;
-    height: 44px;
-    line-height: 44px;
+    font-size: .693333rem;
+    width: 1.173333rem;
+    height: 1.173333rem;
+    line-height: 1.173333rem;
   }
 }
 </style>

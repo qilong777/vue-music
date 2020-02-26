@@ -7,7 +7,7 @@
         <img data-v-61707c42="" data-v-2e5f61c4="" width="60" height="60" v-lazy="item.imgurl">
       </div>
       <div class="content">
-        <h3 class="name" v-text="item.name"></h3>
+        <h3 class="name" v-text="item.creator.name"></h3>
         <p class="desc" v-text="item.dissname">喂，我们有多久没见了</p>
       </div>
     </li>
@@ -37,10 +37,10 @@ export default {
 .music-list{
   background-color: #222;
   h2{
-    height: 65px;
-    line-height: 65px;
+    height: 1.733333rem;
+    line-height: 1.733333rem;
     text-align: center;
-    font-size: 14px;
+    font-size: .373333rem;
     color: #ffcd32;
     font-weight: 400;
     margin: 0;
@@ -49,25 +49,28 @@ export default {
     display: flex;
     box-sizing: border-box;
     align-items: center;
-    padding: 0 20px 20px 20px;
+    padding: 0 .533333rem .533333rem .533333rem;
     .img-box{
-      width: 60px;
-      padding-right: 20px;
+      width: 1.6rem;
+      padding-right: .533333rem;
     }
     .content{
       display: flex;
       flex-direction: column;
       justify-content: center;
       flex: 1;
-      line-height: 20px;
+      line-height: .533333rem;
       overflow: hidden;
-      font-size: 14px;
+      font-size: .373333rem;
       .name{
-        margin-bottom: 10px;
+        margin-bottom: .266667rem;
         color: #fff;
         margin: 0;
+        font-size: 100%;
+        font-weight: 400;
       }
       .desc{
+        font-size: 100%;
         color: hsla(0,0%,100%,.3);
       }
     }

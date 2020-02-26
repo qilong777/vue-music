@@ -29,10 +29,10 @@ export default {
 .tab-bar{
   .van-hairline--top-bottom::after,
   .van-hairline-unset--top-bottom::after{
-    border: 0 none !important;
+    border-width: 0 !important;
   }
   .van-tabs__line{
-    bottom: 20px;
+    bottom: 35%;
   }
 }
 </style>
