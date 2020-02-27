@@ -8,7 +8,7 @@
       </div>
       <div class="content">
         <h3 class="name" v-text="item.creator.name"></h3>
-        <p class="desc" v-text="item.dissname">喂，我们有多久没见了</p>
+        <p class="desc" v-text="item.dissname"></p>
       </div>
     </li>
   </ul>

@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import 'amfe-flexible'
-import { request } from './network/request'
 import Scroller from '@/components/Scroller'
 import {
   Icon,
@@ -18,9 +17,9 @@ Vue.use(Icon)
   .use(Tab).use(Tabs)
   .use(Swipe).use(SwipeItem)
 Vue.use(Lazyload, {
-  lazyComponent: true
+  lazyComponent: true,
+  loading: '/favicon.ico'
 })
-Vue.prototype.$ajax = request
 Vue.config.productionTip = false
 
 Vue.component('Scroller', Scroller)

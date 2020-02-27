@@ -26,5 +26,6 @@ module.exports = {
       .set('routers', resolve('./src/routers'))
       .set('stores', resolve('./src/stores'))
       .set('views', resolve('./src/views'))
+      .set('api', resolve('./src/api'))
   }
 }

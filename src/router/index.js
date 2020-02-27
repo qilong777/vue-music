@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-const Commend = () => import('@/views/Commend')
+const Recommend = () => import('@/views/Recommend')
 const Singer = () => import('@/views/Singer')
 const Rank = () => import('@/views/Rank')
 const Search = () => import('@/views/Search')
@@ -14,7 +14,7 @@ const routes = [
   },
   {
     path: '/commend',
-    component: Commend
+    component: Recommend
   },
   {
     path: '/singer',

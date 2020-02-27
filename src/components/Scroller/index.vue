@@ -16,6 +16,9 @@ export default {
     handleToTouchEnd: {
       type: Function,
       default: function () {}
+    },
+    dom: {
+      type: HTMLLIElement
     }
   },
   data () {
@@ -29,8 +32,7 @@ export default {
     },
     initScroll () {
       this.scroll = new BScroll(this.$refs.wrapper, {
-        tap: true,
-        probeType: 1
+        probeType: 3
       })
       this.scroll.on('scroll', pos => {
         this.handleToScroll(pos)
@@ -38,6 +40,11 @@ export default {
       this.scroll.on('touchEnd', pos => {
         this.handleToTouchEnd(pos)
       })
+    }
+  },
+  watch: {
+    dom () {
+      this.scroll.scrollToElement(this.dom)
     }
   },
   mounted () {

@@ -19,7 +19,13 @@ export default {
   name: 'TabBar',
   data () {
     return {
-      active: 0
+      active: 0,
+      list: ['/commend', '/singer', '/rank', '/search']
+    }
+  },
+  watch: {
+    $route () {
+      this.active = this.list.findIndex(ele => ele === this.$route.path)
     }
   }
 }
