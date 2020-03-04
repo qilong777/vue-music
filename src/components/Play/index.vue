@@ -15,6 +15,7 @@
     <!-- 歌手 -->
     <h2 class='name'>{{currentSong.singer[0].name}}</h2>
 
+    <!-- 轮播图区域 -->
     <div class="content-wrapper">
       <!-- 专辑图片 -->
       <div class='img'>
@@ -51,7 +52,15 @@
     class='small'
     @click='changeScreen(true)'
     >
-    小屏
+    <div class='sm-img'>
+      <img :class='cd' :src="currentSong.albumUrl" alt="">
+    </div>
+    <div class="text">
+      <h2>{{currentSong.songname}}</h2>
+      <p>{{currentSong.singer[0].name}}</p>
+    </div>
+    <van-icon @click.stop :name="play?'pause-circle-o':'play-circle-o'" @click='togglePlay' />
+    <van-icon @click.stop name="music-o" />
   </div>
 
   <audio  ref='audio'
@@ -202,12 +211,6 @@ export default {
       img{
         width: 100%;
         height: 100%;
-        &.cd{
-          animation: rotate 15s linear infinite;
-        }
-        &.paused{
-          animation-play-state: paused;
-        }
       }
     }
 
@@ -217,15 +220,8 @@ export default {
         padding: 20px;
         box-sizing: border-box;
         img{
-            width: 85%;
-            border-radius:50%;
-            border: 10px solid hsla(0,0%,100%,.1);
-        }
-        & .cd{
-          animation: rotate 10s linear infinite;
-        }
-        & .paused{
-          animation-play-state: paused;
+          width: 85%;
+          border: 10px solid hsla(0,0%,100%,.1);
         }
       }
       .desc{
@@ -259,12 +255,50 @@ export default {
 
   }
   .small{
+    display: flex;
     position: fixed;
-    width:100%;
     bottom: 0px;
-    height: 80px;
-    background: red;
+    width:100%;
+    height: 1.6rem;
+    align-items: center;
+    justify-content: center;
+    background: #333;
     z-index: 50;
+    .sm-img{
+      width: 1.066667rem;
+      height: 1.066667rem;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .text{
+      text-align: left;
+      width: 5.333333rem;
+      margin: 0 .133333rem;
+      h2{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        margin: 0;
+        font-weight: 400;
+        font-size: .373333rem;
+      }
+      p{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        margin: 0;
+        font-size: .32rem;
+        color: hsla(0,0%,100%,.3);
+      }
+    }
+    .van-icon{
+      font-size: 1.066667rem;
+      color: rgba(255,205,49,.5);
+      margin: 0 .133333rem;
+    }
+
   }
   @keyframes rotate {
     0% {
@@ -273,6 +307,15 @@ export default {
     100%{
       transform: rotate(360deg)
     }
+  }
+  img{
+    border-radius:50%;
+  }
+  & .cd{
+    animation: rotate 10s linear infinite;
+  }
+  & .paused{
+    animation-play-state: paused;
   }
 }
 </style>

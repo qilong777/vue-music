@@ -59,8 +59,11 @@ export default {
 .lyric{
   height: 20px;
   line-height: 20px;
+  width: 80%;
+  margin: 0 auto;
   font-size: 14px;
   color: hsla(0,0%,100%,.5);
+  overflow: hidden;
 }
 
 </style>
