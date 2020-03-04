@@ -6,47 +6,47 @@
     </div>
     <main class="main">
       <keep-alive>
-        <router-view/>
+        <router-view />
       </keep-alive>
     </main>
+    <Play></Play>
   </div>
 </template>
 <script>
 import Top from '@/components/Top'
 import TabBar from '@/components/TabBar'
+import Play from '@/components/Play'
 export default {
   name: 'App',
   data () {
-    return {
-
-    }
+    return {}
   },
   components: {
     Top,
-    TabBar
+    TabBar,
+    Play
   }
 }
 </script>
 
 <style lang="scss">
-body,html{
+body,
+html {
   height: 100%;
 }
-#app{
+#app {
   display: flex;
   flex-direction: column;
   height: 100%;
-  .top{
+  .top {
     flex-shrink: 0;
     background-color: #222;
   }
-  .main{
+  .main {
     position: relative;
     flex-grow: 1;
     overflow: auto;
     background-color: #222;
   }
-
 }
-
 </style>

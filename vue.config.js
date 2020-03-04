@@ -7,6 +7,13 @@ module.exports = {
   // 开发模式注释
   devServer: {
     proxy: {
+      '/api1': {
+        target: 'http://47.95.207.1:3000',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api1': '' // 将路径中多余的暗号 删除
+        }
+      },
       '/api': {
         target: 'http://ustbhuangyi.com',
         changeOrigin: true,

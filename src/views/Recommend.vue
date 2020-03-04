@@ -1,13 +1,11 @@
 <template>
   <Scroller class="commend">
-    <template>
-      <div>
-        <!-- 轮播图 -->
-        <Swiper :images="images"></Swiper>
-        <!-- 歌单列表 -->
-        <MusicList :list="list"></MusicList>
-      </div>
-    </template>
+    <div>
+      <!-- 轮播图 -->
+      <Swiper :images="images"></Swiper>
+      <!-- 歌单列表 -->
+      <MusicList :list="list"></MusicList>
+    </div>
   </Scroller>
 </template>
 
@@ -55,6 +53,9 @@ export default {
 <style lang='scss'>
 .commend{
   .swiper{
+    .van-swipe__track{
+      height:4.4rem !important;
+    }
     img{
       width: 100%;
       height: 100%;

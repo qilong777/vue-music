@@ -6,7 +6,8 @@
     title-inactive-color="hsla(0,0%,100%,.5)"
     line-width="30"
     v-model="active"
-    class="tab-bar">
+    class="tab-bar"
+    >
     <van-tab title-style="{fontSize:'14px'}" title="推荐" to="/commend"></van-tab>
     <van-tab title="歌手" to="/singer"></van-tab>
     <van-tab title="排行" to="/rank"></van-tab>
@@ -25,7 +26,7 @@ export default {
   },
   watch: {
     $route () {
-      this.active = this.list.findIndex(ele => ele === this.$route.path)
+      this.active = this.list.findIndex(ele => this.$route.path.includes(ele))
     }
   }
 }

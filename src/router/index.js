@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-const Recommend = () => import('@/views/Recommend')
-const Singer = () => import('@/views/Singer')
-const Rank = () => import('@/views/Rank')
-const Search = () => import('@/views/Search')
+import recommend from './recommend'
+import singer from './singer'
+import rank from './rank'
+import search from './search'
 
 Vue.use(VueRouter)
 
@@ -12,22 +12,10 @@ const routes = [
     path: '/',
     redirect: '/commend'
   },
-  {
-    path: '/commend',
-    component: Recommend
-  },
-  {
-    path: '/singer',
-    component: Singer
-  },
-  {
-    path: '/rank',
-    component: Rank
-  },
-  {
-    path: '/search',
-    component: Search
-  }
+  recommend,
+  singer,
+  rank,
+  search
 
 ]
 

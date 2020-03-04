@@ -17,9 +17,7 @@ export default {
       type: Function,
       default: function () {}
     },
-    dom: {
-      type: HTMLLIElement
-    }
+    dom: HTMLLIElement
   },
   data () {
     return {
@@ -32,6 +30,7 @@ export default {
     },
     initScroll () {
       this.scroll = new BScroll(this.$refs.wrapper, {
+        tap: true,
         probeType: 3
       })
       this.scroll.on('scroll', pos => {
@@ -41,6 +40,9 @@ export default {
         this.handleToTouchEnd(pos)
       })
     }
+  },
+  computed: {
+
   },
   watch: {
     dom () {
