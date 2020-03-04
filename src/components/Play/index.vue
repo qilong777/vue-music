@@ -6,10 +6,12 @@
     <h1 class='player-top'>
       {{currentSong.songname}}
     </h1>
-      <!-- 背景 -->
+
+    <!-- 背景 -->
     <div class='bg'>
       <img :src="currentSong.albumUrl" alt="">
     </div>
+
     <!-- 歌手 -->
     <h2 class='name'>{{currentSong.singer[0].name}}</h2>
 
@@ -19,13 +21,29 @@
         <img :class='cd' :src="currentSong.albumUrl" alt="">
       </div>
 
-      <p class="desc">词:{{currentSong.singer[0].name}}</p>
+      <Lyric
+        :endTime = 'endTime'
+        :touchTime = 'touchTime'
+        :play='play'
+      ></Lyric>
     </div>
 
     <div class="bottom">
+      <Progress
+        :startTime = 'startTime'
+        :endTime = 'endTime'
+        :touchTime = 'touchTime'
+        @updateCurrentTime='updateCurrentTime'
+        @updateTouchTime='updateTouchTime'
+      ></Progress>
+      <div class="control">
+        <i class="iconfont" :class="'icon-' + loops[loop]" @click="changeLoop"></i>
+        <i class="iconfont icon-shangyishou" @click='prevCurrentIndex'></i>
+        <van-icon :name="play?'pause-circle-o':'play-circle-o'" @click='togglePlay' />
+        <i class="iconfont icon-xiayishou" @click='nextCurrentIndex'></i>
+        <i class="iconfont icon-shoucang" ></i>
+      </div>
 
-      <button @click='togglePlay'>播放</button>
-      <button @click='next'>下一曲</button>
     </div>
 
   </div>
@@ -37,43 +55,89 @@
   </div>
 
   <audio  ref='audio'
+    @ended='ended'
     @canplay='canplay'
-    controls :src='currentSong.audioUrl'>
+    @timeupdate="timeupdate"
+    :src='currentSong.audioUrl'>
   </audio>
 </div>
 </template>
 
 <script>
+import 'assets/iconfont/iconfont.css'
+import Progress from 'components/Progress'
+import Lyric from 'components/Lyric'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'Play',
   data () {
     return {
+      startTime: 0,
+      endTime: 0,
+      touchTime: 0,
+      loops: ['danqubofang', 'xunhuanbofang', 'suijibofang'],
       play: false
     }
   },
   computed: {
-    ...mapState(['songList', 'fullScreen']),
+    ...mapState(['currentIndex', 'songList', 'fullScreen', 'loop']),
     ...mapGetters(['currentSong']),
     cd () {
       return this.play ? 'cd' : 'cd paused'
     }
   },
   methods: {
-    ...mapMutations(['changeScreen', 'nextCurrendIndex']),
+    ...mapMutations(['changeScreen', 'changeCurrentIndex', 'nextCurrentIndex', 'prevCurrentIndex', 'changeLoop']),
     togglePlay () {
       this.play = !this.play
+    },
+    timeupdate (e) {
+      // console.log('歌曲播放',e)
+      // 随着播放更新时间
+      this.startTime = e.target.currentTime
     },
     canplay () {
       // 歌曲可以播放
       this.audio = this.$refs.audio
       this.audio.play()
       this.play = true
-      // console.log(this.audio.__proto__)
+      // 获取歌曲的总时长
+      this.endTime = this.audio.duration
     },
-    next () {
-      // 下一曲
-      this.nextCurrendIndex()
+    updateCurrentTime (s) {
+      if (!this.audio) { return false }
+      // 更改播放的时间
+      this.audio.currentTime = s
+    },
+    updateTouchTime (s) {
+      this.touchTime = s
+    },
+    ended () {
+      let index = this.currentIndex
+      switch (this.loop) {
+        case 0:
+          //  单曲循环
+          this.play = true
+          this.audio.play()
+          break
+        case 1:
+          // 播放夏一首歌
+          this.nextCurrentIndex()
+          // this.audio.play()
+          break
+        case 2:
+          // 随机播放
+          // 除非歌单只有一首歌曲，否则下一首歌曲不能和这一首相同
+          if (this.songList.length !== 1) {
+            while (index === this.currentIndex) {
+              index = parseInt(Math.random() * this.songList.length)
+            }
+          }
+          this.changeCurrentIndex(index)
+          break
+        default:
+          break
+      }
     }
   },
   watch: {
@@ -85,6 +149,13 @@ export default {
         this.audio.pause()
       }
     }
+  },
+  components: {
+    Progress,
+    Lyric
+  },
+  mounted () {
+
   }
 }
 </script>
@@ -168,8 +239,22 @@ export default {
 
     .bottom{
       position: absolute;
-      bottom: 50px;
+      bottom: 1.333333rem;
       width: 100%;
+      .control{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin: .266667rem .266667rem 0;
+        color: #ffcd32;
+        font-size: .8rem;
+        .iconfont{
+          font-size: .8rem;
+        }
+        .van-icon{
+          font-size: 1.333333rem;
+        }
+      }
     }
 
   }
@@ -178,7 +263,8 @@ export default {
     width:100%;
     bottom: 0px;
     height: 80px;
-    background: lightgreen
+    background: red;
+    z-index: 50;
   }
   @keyframes rotate {
     0% {

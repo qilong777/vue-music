@@ -56,10 +56,23 @@ const getSongUrlByMid = (mids) => {
     }
   })
 }
+
+// 根据mid获取歌词
+const getLyricByMid = (songmid) => {
+  const url = '/api1/fcj/music/lyric'
+  return request({
+    method: 'post',
+    url,
+    data: {
+      songmid
+    }
+  })
+}
 export {
   getBannerList,
   getSongList,
   getSingerList,
   getSingerById,
-  getSongUrlByMid
+  getSongUrlByMid,
+  getLyricByMid
 }

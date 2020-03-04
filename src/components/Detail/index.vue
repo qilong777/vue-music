@@ -7,7 +7,7 @@
     <div class="bg"  :style="{'background-image':`url(${imgSrc})`}" ref="bgEl">
       <div class="filter"></div>
       <div class="play-wrapper">
-      <div class="play" v-show="isPlayShow">
+      <div class="play" v-show="isPlayShow" @click="openPlay()">
         <van-icon name="play-circle-o" />
         <span>随机播放全部</span>
       </div>
@@ -39,12 +39,16 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['addSongList', 'changeCurrendIndex', 'changeScreen']),
+    ...mapMutations(['addSongList', 'changeCurrentIndex', 'changeScreen']),
     openPlay (index) {
-      // 点击歌的li 显示播放器
-      this.addSongList([this.list[index]])
-      // 确定点击的是那首歌
-      this.changeCurrendIndex(0)
+      if (index !== undefined) {
+        // 点击歌的li 显示播放器
+        this.addSongList([this.list[index]])
+      } else {
+        const temp = this.list
+        this.addSongList([...this.list.sort((a, b) => Math.random() - 0.5)])
+        this.list = temp
+      }
       // 点击屏幕变大
       this.changeScreen(true)
     },
@@ -78,6 +82,7 @@ export default {
         this.imgSrc = `https://y.gtimg.cn/music/photo_new/T001R300x300M000${data.singer_mid}.jpg?max_age=2592000`
         const result = data.list.map(ele => {
           const { albummid, albumname, singer, songmid, songname } = ele.musicData
+
           const albumUrl = `https://y.gtimg.cn/music/photo_new/T002R300x300M000${albummid}.jpg?max_age=2592000`
           mids.push(songmid)
           return { albummid, albumname, singer, songmid, songname, albumUrl }

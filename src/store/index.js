@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     songList: [], // 要播放的歌曲列表
     fullScreen: true, // 大屏小屏
-    currentIndex: -1 // 当前正在播放那首歌
+    currentIndex: -1, // 当前正在播放那首歌,
+    loop: 0 // 0单曲，1循环，2随机
   },
   mutations: {
     // 控制大屏小屏切换
@@ -17,17 +18,34 @@ export default new Vuex.Store({
     // 添加播放列表
     addSongList (state, params) {
       // params 要播放的歌曲列表
-      state.songList.unshift(...params)
+      // 排除掉已存在的歌曲
+      const fparams = params.filter(ele => {
+        return !state.songList.some(item => ele.songmid === item.songmid)
+      })
+      if (fparams.length) {
+        state.songList.unshift(...fparams)
+        state.currentIndex = 0
+      } else {
+        state.currentIndex = state.songList.findIndex(ele => ele.songmid === params[0].songmid)
+      }
     },
-    changeCurrendIndex (state, index) {
+    changeCurrentIndex (state, index) {
       // 修改当前正在播放那首歌
       state.currentIndex = index
     },
-    nextCurrendIndex (state) {
-      if (state.currentIndex < state.songList.length - 1) { state.currentIndex++ }
+    nextCurrentIndex (state) {
+      state.currentIndex = (state.currentIndex + 1) % state.songList.length
     },
-    prevCurrendIndex (state) {
-      if (state.currentIndex > 0) { state.currentIndex-- }
+    prevCurrentIndex (state) {
+      if (state.currentIndex > 0) {
+        state.currentIndex--
+      } else {
+        state.currentIndex = state.songList.length - 1
+      }
+    },
+    changeLoop (state) {
+      // 修改循环模式
+      state.loop = (state.loop + 1) % 3
     }
   },
   getters: {
