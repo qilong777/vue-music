@@ -45,6 +45,12 @@ const getSingerById = (id) => {
   })
 }
 
+// 根据id获取推荐歌单
+const getRecommendById = (id) => {
+  const url = `/api/music/api/getCdInfo?g_tk=1928093487&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp&disstid=${id}&type=1&json=1&utf8=1&onlysong=0&platform=yqq&hostUin=0&needNewCode=0`
+  return request({ url })
+}
+
 // 根据mids 获取播放的url地址
 const getSongUrlByMid = (mids) => {
   const url = '/api1/fcj/music/songurl'
@@ -68,11 +74,47 @@ const getLyricByMid = (songmid) => {
     }
   })
 }
+
+// 获取排行列表
+const getRankList = () => {
+  const url = 'https://c.y.qq.com/v8/fcg-bin/fcg_myqq_toplist.fcg?g_tk=1928093487&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp&uin=0&needNewCode=1&platform=h5'
+  return new Promise((resolve, reject) => {
+    jsonp(url, {
+      param: 'jsonpCallback'
+    }, (err, data) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(data)
+      }
+    })
+  })
+}
+
+// 根据id获取排行数据
+const getRankById = (id) => {
+  const url = `https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg?g_tk=1928093487&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp&topid=${id}&needNewCode=1&uin=0&tpl=3&page=detail&type=top&platform=h5`
+  return new Promise((resolve, reject) => {
+    jsonp(url, {
+      param: 'jsonpCallback'
+    }, (err, data) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(data)
+      }
+    })
+  })
+}
+
 export {
   getBannerList,
   getSongList,
   getSingerList,
   getSingerById,
   getSongUrlByMid,
-  getLyricByMid
+  getLyricByMid,
+  getRankList,
+  getRecommendById,
+  getRankById
 }

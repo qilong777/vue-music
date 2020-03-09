@@ -12,7 +12,8 @@ import {
   SwipeItem,
   Lazyload,
   Popup,
-  Button
+  Button,
+  Loading
 } from 'vant'
 
 Vue
@@ -21,6 +22,7 @@ Vue
   .use(Swipe).use(SwipeItem)
   .use(Popup)
   .use(Button)
+  .use(Loading)
 Vue.use(Lazyload, {
   lazyComponent: true,
   loading: '/favicon.ico'

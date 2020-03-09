@@ -1,12 +1,20 @@
 <template>
-  <Scroller class="commend">
+<div class="commend">
+  <Scroller >
     <div>
       <!-- 轮播图 -->
       <Swiper :images="images"></Swiper>
       <!-- 歌单列表 -->
-      <MusicList :list="list"></MusicList>
+      <van-loading class="loading" v-if="isloading" type="spinner" />
+      <MusicList v-else :list="list"></MusicList>
+
     </div>
   </Scroller>
+  <transition name="slide">
+    <router-view></router-view>
+  </transition>
+</div>
+
 </template>
 
 <script>
@@ -18,7 +26,8 @@ export default {
   data () {
     return {
       images: [],
-      list: []
+      list: [],
+      isloading: true
     }
   },
   methods: {
@@ -33,6 +42,7 @@ export default {
     async getList () {
       try {
         const data = await getSongList()
+        this.isloading = false
         this.list = data.data.list
       } catch (err) {
 
@@ -69,6 +79,25 @@ export default {
         background: hsla(0,0%,100%,.8);
       }
     }
+  }
+  .loading{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-15px);
+    transform: translateX(-15px);
+  }
+  .slide-enter-active,
+  .slide-leave-active{
+    transition: all 0.3s;
+  }
+  .slide-enter,
+  .slide-leave-to{
+    transform: translateX(100%)
+  }
+  .slide-enter-to,
+  .slide-leave{
+    transform: translateX(0%)
   }
 }
 </style>

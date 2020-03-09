@@ -63,16 +63,19 @@
     <van-icon @click.stop="showList=!showList" name="music-o" :info="songList.length" />
   </div>
 
+  <!-- 音频 -->
   <audio  ref='audio'
     @ended='ended'
     @canplay='canplay'
     @timeupdate="timeupdate"
     :src='currentSong.audioUrl'>
   </audio>
+
+  <!-- 歌曲列表弹出层 -->
   <van-popup
     v-model="showList"
     position="bottom"
-  >
+    >
     <div class="pop-top">
       <div class="left">
         <i class="iconfont" :class="'icon-' + loops[loop]" @click="changeLoop"></i>
@@ -120,7 +123,7 @@ export default {
       loops: ['danquxunhuan', 'xunhuanbofang', 'suijibofang'],
       loopChinese: ['单曲循环', '循环播放', '随机播放'],
       play: false,
-      // 显示歌单弹窗列表
+      // 是否显示歌单弹窗列表
       showList: false
     }
   },
@@ -299,7 +302,7 @@ export default {
     align-items: center;
     justify-content: center;
     background: #333;
-    z-index: 50;
+    z-index: 51;
     .sm-img{
       width: 1.066667rem;
       height: 1.066667rem;
@@ -338,7 +341,6 @@ export default {
   }
 
   .van-popup{
-    position: relative;
     background-color: #333;
     .pop-top{
       display: flex;
@@ -366,7 +368,7 @@ export default {
     }
     .wrapper{
       overflow: auto;
-      max-height: 300px;
+      max-height: 250px;
       .show-list{
         li{
           display: flex;

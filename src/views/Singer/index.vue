@@ -1,17 +1,20 @@
 <template>
   <div class="singer">
-    <SingerList
-    @changeCurrent="changeCurrent"
-    @changeDistance="changeDistance"
-    :distance="distance"
-    :singerList="singerList"
-    :dom="dom"></SingerList>
-    <SingerSider
-    @changeCurrent="changeCurrent"
-    @changeDom="changeDom"
-    :current="current"
-    :singerList="singerList"
-    :distance="distance"></SingerSider>
+    <van-loading class="loading" v-show="isloading" type="spinner" />
+    <div v-show="!isloading">
+      <SingerList
+        @changeCurrent="changeCurrent"
+        @changeDistance="changeDistance"
+        :distance="distance"
+        :singerList="singerList"
+        :dom="dom"></SingerList>
+        <SingerSider
+        @changeCurrent="changeCurrent"
+        @changeDom="changeDom"
+        :current="current"
+        :singerList="singerList"
+        :distance="distance"></SingerSider>
+    </div>
 
   <transition name="slide">
     <router-view></router-view>
@@ -31,7 +34,8 @@ export default {
       singerList: [],
       current: '热门',
       dom: null,
-      distance: []
+      distance: [],
+      isloading: true
     }
   },
   methods: {
@@ -70,6 +74,7 @@ export default {
 
         singerList.unshift({ Findex: '热门', list: hotList })
         this.singerList = singerList
+        this.isloading = false
       } catch (err) {
 
       }
@@ -97,15 +102,6 @@ export default {
   },
   created () {
     this.getSingerList()
-  },
-  watch: {
-    // '$route' (to, from) {
-    //   const toDepth = to.path.split('/').length
-    //   const fromDepth = from.path.split('/').length
-    //   this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
-    //   console.log(this.transitionName)
-    // }
-
   }
 }
 </script>
@@ -126,6 +122,13 @@ export default {
   .slide-enter-to,
   .slide-leave{
     transform: translateX(0%)
+  }
+  .loading{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-15px);
+    transform: translateX(-15px);
   }
 }
 </style>

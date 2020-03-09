@@ -1,33 +1,37 @@
 <template>
   <div class="detail">
-    <div class="detail-top">
-      <van-icon name="arrow-left" @click="$router.back()" />
-      <h1>{{name}}</h1>
-    </div>
-    <div class="bg"  :style="{'background-image':`url(${imgSrc})`}" ref="bgEl">
-      <div class="filter"></div>
-      <div class="play-wrapper">
-      <div class="play" v-show="isPlayShow" @click="openPlay()">
-        <van-icon name="play-circle-o" />
-        <span>随机播放全部</span>
+    <van-loading class="loading" v-show="isloading" type="spinner" />
+    <div v-show="!isloading">
+      <div class="detail-top">
+        <van-icon name="arrow-left" @click="$router.back()" />
+        <h1>{{name}}</h1>
+      </div>
+      <div class="bg"  :style="{'background-image':`url(${imgSrc})`}" ref="bgEl">
+        <div class="filter"></div>
+        <div class="play-wrapper">
+        <div class="play" v-show="isPlayShow" @click="openPlay()">
+          <van-icon name="play-circle-o" />
+          <span>随机播放全部</span>
+        </div>
+      </div>
+      </div>
+      <div class="container" ref="wrapper">
+        <ul class="list">
+          <li v-for="(item,index) in list" :key="index" @tap="openPlay(index)">
+            <h2 class="name">{{item.songname}}</h2>
+            <p class="desc">{{name}}·{{item.albumname}}</p>
+          </li>
+        </ul>
       </div>
     </div>
-    </div>
-    <div class="container" ref="wrapper">
-      <ul class="list">
-        <li v-for="(item,index) in list" :key="index" @tap="openPlay(index)">
-          <h2 class="name">{{item.songname}}</h2>
-          <p class="desc">{{name}}·{{item.albumname}}</p>
-        </li>
-      </ul>
-    </div>
+
   </div>
 </template>
 
 <script>
 import { mapMutations } from 'vuex'
 import BScroll from 'better-scroll'
-import { getSingerById, getSongUrlByMid } from 'api'
+import { getSingerById, getSongUrlByMid, getRecommendById, getRankById } from 'api'
 export default {
   name: 'DetailTop',
   data () {
@@ -35,7 +39,8 @@ export default {
       name: '',
       imgSrc: '',
       list: [],
-      isPlayShow: true
+      isPlayShow: true,
+      isloading: true
     }
   },
   methods: {
@@ -53,14 +58,11 @@ export default {
     handleToScroll ({ y }, imgH, bgEl) {
       if (y < 0) {
         if (Math.abs(y) >= imgH - 40) {
-          bgEl.style.paddingTop = '0px'
-          bgEl.style.height = '40px'
-          bgEl.style.zIndex = '10'
+          console.log(1)
+          bgEl.className = 'bg fixed'
           this.isPlayShow = false
         } else {
-          bgEl.style.paddingTop = '70%'
-          bgEl.style.height = '0px'
-          bgEl.style.zIndex = '0'
+          bgEl.className = 'bg'
           this.isPlayShow = true
         }
       } else {
@@ -69,7 +71,7 @@ export default {
       }
     },
     // 获取并处理数据
-    async getData () {
+    async getSingerData () {
       try {
         const { id } = this.$route.params
         const data = await getSingerById(id)
@@ -103,6 +105,87 @@ export default {
             this.handleToScroll(pos, imgH, bgEl)
           })
         })
+        this.isloading = false
+      } catch (err) {
+
+      }
+    },
+
+    async getRecommendData () {
+      try {
+        const { id } = this.$route.params
+        const data = ((await getRecommendById(id)).cdlist)[0]
+
+        this.name = data.dissname
+        const mids = []
+        this.imgSrc = data.logo
+        const result = data.songlist.map(ele => {
+          const { albummid, albumname, singer, songmid, songname } = ele
+          const albumUrl = `https://y.gtimg.cn/music/photo_new/T002R300x300M000${albummid}.jpg?max_age=2592000`
+          mids.push(songmid)
+          return { albummid, albumname, singer, songmid, songname, albumUrl }
+        })
+
+        const { urls } = await getSongUrlByMid(mids)
+        for (let index = 0, len = result.length; index < len; index++) {
+          result[index].audioUrl = urls[index]
+        }
+        this.list = result
+
+        this.$nextTick(() => {
+          const bgEl = this.$refs.bgEl
+          const imgH = bgEl.clientHeight
+          this.scroll = new BScroll(this.$refs.wrapper, {
+            tap: true,
+            probeType: 3
+          })
+          this.scroll.on('scroll', pos => {
+            this.handleToScroll(pos, imgH, bgEl)
+          })
+        })
+        this.isloading = false
+      } catch (err) {
+
+      }
+    },
+
+    async getRankData () {
+      try {
+        const { id } = this.$route.params
+
+        const data = await getRankById(id)
+
+        console.log(data.songlist[0].data)
+
+        this.name = data.topinfo.ListName
+        const mids = []
+
+        this.imgSrc = `https://y.gtimg.cn/music/photo_new/T002R300x300M000${data.songlist[0].data.albummid}.jpg?max_age=2592000`
+        const result = data.songlist.map(ele => {
+          const { albummid, albumname, singer, songmid, songname } = ele.data
+          const albumUrl = `https://y.gtimg.cn/music/photo_new/T002R300x300M000${albummid}.jpg?max_age=2592000`
+          mids.push(songmid)
+          return { albummid, albumname, singer, songmid, songname, albumUrl }
+        })
+
+        const { urls } = await getSongUrlByMid(mids)
+        for (let index = 0, len = result.length; index < len; index++) {
+          result[index].audioUrl = urls[index]
+        }
+        this.list = result
+
+        this.$nextTick(() => {
+          const bgEl = this.$refs.bgEl
+          const imgH = bgEl.clientHeight
+          this.scroll = new BScroll(this.$refs.wrapper, {
+            tap: true,
+            probeType: 3
+          })
+          this.scroll.on('scroll', pos => {
+            this.handleToScroll(pos, imgH, bgEl)
+          })
+        })
+        this.isloading = false
       } catch (err) {
 
       }
@@ -110,7 +193,14 @@ export default {
   },
 
   created () {
-    this.getData()
+    const path = this.$route.path
+    if (path.startsWith('/singer')) {
+      this.getSingerData()
+    } else if (path.startsWith('/recommend')) {
+      this.getRecommendData()
+    } else if (path.startsWith('/rank')) {
+      this.getRankData()
+    }
   }
 }
 </script>
@@ -122,7 +212,14 @@ export default {
   height: 100%;
   width: 100%;
   background: #222;
-  z-index: 50;
+  z-index: 51;
+  .loading{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-15px);
+    transform: translateX(-15px);
+  }
   .detail-top{
     position: absolute;
     width: 100%;
@@ -189,9 +286,14 @@ export default {
         }
       }
     }
+    &.fixed{
+      padding-top: 40px;
+      z-index: 10;
+    }
   }
   .container{
     position: absolute;
+    top: 40%;
     height: 100%;
     width: 100%;
     overflow: visible;

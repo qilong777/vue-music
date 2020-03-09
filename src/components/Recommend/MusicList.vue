@@ -2,7 +2,7 @@
 <div class='music-list'>
   <h2>热门歌单推荐</h2>
   <ul>
-    <li v-for="item in list" :key="item.id">
+    <li v-for="item in list" :key="item.id" @tap="toDetail(item.dissid)">
       <div class="img-box">
         <img data-v-61707c42="" data-v-2e5f61c4="" width="60" height="60" v-lazy="item.imgurl">
       </div>
@@ -12,6 +12,7 @@
       </div>
     </li>
   </ul>
+
 </div>
 </template>
 
@@ -28,6 +29,11 @@ export default {
   data () {
     return {
 
+    }
+  },
+  methods: {
+    toDetail (id) {
+      this.$router.push('/recommend/' + id)
     }
   }
 }
