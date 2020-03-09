@@ -10,12 +10,17 @@ import {
   Tabs,
   Swipe,
   SwipeItem,
-  Lazyload
+  Lazyload,
+  Popup,
+  Button
 } from 'vant'
 
-Vue.use(Icon)
+Vue
+  .use(Icon)
   .use(Tab).use(Tabs)
   .use(Swipe).use(SwipeItem)
+  .use(Popup)
+  .use(Button)
 Vue.use(Lazyload, {
   lazyComponent: true,
   loading: '/favicon.ico'

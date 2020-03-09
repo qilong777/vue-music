@@ -20,18 +20,18 @@
       "unicode_decimal": 58902
     },
     {
-      "icon_id": "1159897",
-      "name": "单曲播放",
-      "font_class": "danqubofang",
-      "unicode": "e621",
-      "unicode_decimal": 58913
-    },
-    {
       "icon_id": "1159898",
       "name": "随机播放",
       "font_class": "suijibofang",
       "unicode": "e622",
       "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "1306468",
+      "name": "单曲循环",
+      "font_class": "danquxunhuan",
+      "unicode": "e612",
+      "unicode_decimal": 58898
     },
     {
       "icon_id": "2158796",

@@ -45,7 +45,7 @@ export default {
           this.text = txt
         })
       } catch (err) {
-        console.log(err)
+
       }
     }
   },

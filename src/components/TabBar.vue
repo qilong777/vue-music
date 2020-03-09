@@ -8,7 +8,7 @@
     v-model="active"
     class="tab-bar"
     >
-    <van-tab title-style="{fontSize:'14px'}" title="推荐" to="/commend"></van-tab>
+    <van-tab title-style="{fontSize:'14px'}" title="推荐" to="/recommend"></van-tab>
     <van-tab title="歌手" to="/singer"></van-tab>
     <van-tab title="排行" to="/rank"></van-tab>
     <van-tab title="搜索" to="/search"></van-tab>

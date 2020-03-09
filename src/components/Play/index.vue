@@ -60,7 +60,7 @@
       <p>{{currentSong.singer[0].name}}</p>
     </div>
     <van-icon @click.stop :name="play?'pause-circle-o':'play-circle-o'" @click='togglePlay' />
-    <van-icon @click.stop name="music-o" />
+    <van-icon @click.stop="showList=!showList" name="music-o" :info="songList.length" />
   </div>
 
   <audio  ref='audio'
@@ -69,6 +69,39 @@
     @timeupdate="timeupdate"
     :src='currentSong.audioUrl'>
   </audio>
+  <van-popup
+    v-model="showList"
+    position="bottom"
+  >
+    <div class="pop-top">
+      <div class="left">
+        <i class="iconfont" :class="'icon-' + loops[loop]" @click="changeLoop"></i>
+        <span>{{loopChinese[loop]}}</span>
+      </div>
+      <van-icon class="del-icon" name="delete" @click="clearSongList" />
+    </div>
+    <div class="wrapper">
+      <ul class="show-list">
+        <li @click="changeCurrentIndex(index)" v-for="(item,index) in songList" :key="item.songmid">
+          <div class="left">
+            <van-icon v-if="currentIndex===index" @click.stop name="play-circle-o"/>
+            <span>{{item.songname}}</span>
+          </div>
+          <div class="right">
+            <i class="iconfont icon-shoucang"></i>
+            <van-icon name="cross" @click.stop="deleteSongList(index)" />
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="add-wrapper">
+      <van-button size="small" class="add-btn" icon="plus" round  type="info">添加歌曲到队列</van-button>
+    </div>
+
+    <div class="close" @click="showList=false">
+      关闭
+    </div>
+  </van-popup>
 </div>
 </template>
 
@@ -84,8 +117,11 @@ export default {
       startTime: 0,
       endTime: 0,
       touchTime: 0,
-      loops: ['danqubofang', 'xunhuanbofang', 'suijibofang'],
-      play: false
+      loops: ['danquxunhuan', 'xunhuanbofang', 'suijibofang'],
+      loopChinese: ['单曲循环', '循环播放', '随机播放'],
+      play: false,
+      // 显示歌单弹窗列表
+      showList: false
     }
   },
   computed: {
@@ -96,7 +132,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['changeScreen', 'changeCurrentIndex', 'nextCurrentIndex', 'prevCurrentIndex', 'changeLoop']),
+    ...mapMutations(['changeScreen', 'changeCurrentIndex', 'nextCurrentIndex', 'prevCurrentIndex', 'changeLoop', 'deleteSongList', 'clearSongList']),
     togglePlay () {
       this.play = !this.play
     },
@@ -299,6 +335,91 @@ export default {
       margin: 0 .133333rem;
     }
 
+  }
+
+  .van-popup{
+    position: relative;
+    background-color: #333;
+    .pop-top{
+      display: flex;
+      padding: 20px 30px 10px 20px;
+      justify-content: space-between;
+      align-items: center;
+      .left{
+        display: flex;
+        align-items: center;
+        i{
+          margin-right: 10px;
+          font-size: 30px;
+          color: rgba(255,205,49,.5);
+        }
+        span{
+          font-size: 14px;
+          color: hsla(0,0%,100%,.5);
+        }
+      }
+      .del-icon{
+        font-size: 18px;
+        color: hsla(0,0%,100%,.3);
+      }
+
+    }
+    .wrapper{
+      overflow: auto;
+      max-height: 300px;
+      .show-list{
+        li{
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 40px;
+          padding: 0 30px 0 20px;
+          overflow: hidden;
+          .left{
+            display: flex;
+            align-items: center;
+            i{
+              font-size: 12px;
+              color: rgba(255,205,49,.5);
+              margin-right: 10px;
+            }
+            span{
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              font-size: 14px;
+              color: hsla(0,0%,100%,.3);
+            }
+          }
+          .right{
+            font-size: 12px;
+            color: #ffcd32;
+            .icon-shoucang{
+              margin-right: 15px;
+            }
+          }
+        }
+      }
+    }
+    .add-wrapper{
+      width: 100%;
+      text-align: center;
+      .add-btn{
+        width: 140px;
+        height: auto;
+        margin: 20px auto 30px auto;
+        border: 1px solid hsla(0,0%,100%,.5);
+        color: hsla(0,0%,100%,.5);
+        background-color: #333;
+      }
+    }
+    .close{
+      line-height: 50px;
+      text-align: center;
+      background: #222;
+      font-size: 16px;
+      color: hsla(0,0%,100%,.5);
+    }
   }
   @keyframes rotate {
     0% {

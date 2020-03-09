@@ -71,7 +71,7 @@ export default {
         singerList.unshift({ Findex: '热门', list: hotList })
         this.singerList = singerList
       } catch (err) {
-        console.log(err)
+
       }
     },
 

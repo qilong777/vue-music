@@ -28,15 +28,18 @@ export default {
     }
   },
   methods: {
+    // 歌曲跳转
     jump (precent) {
       // console.log(precent,this.endTime)
       const time = precent * this.endTime / 100
       // 调用父组件的方法控制播放时间
       this.$emit('updateCurrentTime', time)
     },
+    // 按下开始
     touchStart (e) {
       this.touch = true
     },
+    // 按下移动
     touchMove (e) {
       const left = this.$refs.wrapper.getBoundingClientRect().left
       const width = this.$refs.wrapper.clientWidth
@@ -49,10 +52,12 @@ export default {
       }
       this.offsetMove(this.distance)
     },
+    // 按下结束
     touchEnd () {
       this.touch = false
       this.offsetMove(this.distance)
     },
+    // 点击事件
     clickProgress (e) {
       // 点击进度条跳转
       const x = e.pageX
@@ -61,6 +66,7 @@ export default {
       // console.log('点击进度条',distance)
       this.offsetMove(distance)
     },
+    // 处理进度条和小圆点的样式
     offsetMove (distance) {
       // 进度条的移动
       const precent = (distance / this.$refs.wrapper.clientWidth) * 100
@@ -78,6 +84,7 @@ export default {
   },
 
   filters: {
+    // 时间过滤器把second转为 m-ss
     handleTime (data) {
       const time = parseInt(data)
       const m = parseInt(time / 60)

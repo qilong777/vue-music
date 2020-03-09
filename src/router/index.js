@@ -10,7 +10,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/commend'
+    redirect: '/recommend'
   },
   recommend,
   singer,

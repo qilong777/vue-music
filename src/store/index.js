@@ -29,6 +29,16 @@ export default new Vuex.Store({
         state.currentIndex = state.songList.findIndex(ele => ele.songmid === params[0].songmid)
       }
     },
+    deleteSongList (state, index) {
+      if (state.currentIndex > index) {
+        state.currentIndex--
+      }
+      state.songList.splice(index, 1)
+    },
+    clearSongList (state) {
+      state.currentIndex = -1
+      state.songList = []
+    },
     changeCurrentIndex (state, index) {
       // 修改当前正在播放那首歌
       state.currentIndex = index

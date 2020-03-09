@@ -1,10 +1,27 @@
+const autoprefixer = require('autoprefixer')
+const pxtorem = require('postcss-pxtorem')
 const path = require('path')// 引入path模块
 function resolve (dir) {
   return path.join(__dirname, dir)// path.join(__dirname)设置绝对路径
 }
 
 module.exports = {
-  // 开发模式注释
+
+  outputDir: 'dist',
+  publicPath: process.env.NODE_ENV === 'production' ? '/vant-demo/' : '/',
+  css: {
+    loaderOptions: {
+      postcss: {
+        plugins: [
+          autoprefixer(),
+          pxtorem({
+            rootValue: 37.5,
+            propList: ['*']
+          })
+        ]
+      }
+    }
+  },
   devServer: {
     proxy: {
       '/api1': {

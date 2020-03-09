@@ -27,7 +27,7 @@ export default {
         const data = await getBannerList()
         this.images = data.data.slider
       } catch (err) {
-        console.log(err)
+
       }
     },
     async getList () {
@@ -35,7 +35,7 @@ export default {
         const data = await getSongList()
         this.list = data.data.list
       } catch (err) {
-        console.log(err)
+
       }
     }
   },

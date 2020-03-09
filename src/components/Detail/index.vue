@@ -45,9 +45,7 @@ export default {
         // 点击歌的li 显示播放器
         this.addSongList([this.list[index]])
       } else {
-        const temp = this.list
-        this.addSongList([...this.list.sort((a, b) => Math.random() - 0.5)])
-        this.list = temp
+        this.addSongList([...this.list].sort((a, b) => Math.random() - 0.5))
       }
       // 点击屏幕变大
       this.changeScreen(true)
@@ -106,7 +104,7 @@ export default {
           })
         })
       } catch (err) {
-        console.log(err)
+
       }
     }
   },

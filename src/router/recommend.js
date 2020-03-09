@@ -1,5 +1,7 @@
 const Recommend = () => import('@/views/Recommend')
 export default {
-  path: '/commend',
+  path: '/recommend',
   component: Recommend
+  // 别名
+  // alias: ['/hao', '/haoge']
 }
